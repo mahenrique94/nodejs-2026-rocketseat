@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { CheckCircle2, Zap, List, Target, AlertTriangle, XCircle } from 'lucide-react'

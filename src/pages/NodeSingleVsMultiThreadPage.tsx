@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import {
-  ChefHat, Users, Cpu, Eye, Compass,
+  ChefHat, Users, Cpu, Compass,
   FolderOpen, Globe, Lock, Image, BarChart2, Zap,
-  Play, Pause, RotateCcw, RefreshCcw,
+  RotateCcw, RefreshCcw,
   Lightbulb, AlertTriangle, CheckCircle2, XCircle,
   FlaskConical, Search, Crown, Settings2, Loader2, Flame, GitBranch,
 } from 'lucide-react'
@@ -14,12 +14,6 @@ import { RocketseatIcon } from '../components/RocketseatLogo'
 
 type LucideIcon = React.ComponentType<{ className?: string }>
 type Mode = 'single' | 'multi'
-
-interface RequestItem {
-  id: number
-  label: string
-  status: 'pending' | 'processing' | 'done'
-}
 
 // ─── blocking demo ────────────────────────────────────────────────────────────
 

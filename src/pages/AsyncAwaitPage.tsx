@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { Lightbulb, CheckCircle2, XCircle, Code2, Zap, RefreshCcw } from 'lucide-react'

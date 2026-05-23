@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import {
-  AlertTriangle, GitBranch, ShieldAlert, CheckCircle2, XCircle,
+  AlertTriangle, GitBranch, ShieldAlert, CheckCircle2,
   Clock, ArrowRight, Lightbulb,
 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
@@ -126,37 +126,6 @@ const PROBLEMS = [
     body: 'Você passa sua função para código de terceiros. Perde controle de quando, quantas vezes e se ela será chamada. Um problema fundamental de confiança.',
   },
 ]
-
-// ─── sub-components ───────────────────────────────────────────────────────────
-
-function CodePanel({
-  code,
-  label,
-  icon,
-  accent,
-}: {
-  code: string
-  label: string
-  icon: React.ReactNode
-  accent: 'bad' | 'good'
-}) {
-  const styles = {
-    bad: { border: 'border-red-500/30', bg: 'bg-red-500/5', header: 'text-red-400' },
-    good: { border: 'border-[#29e0a9]/30', bg: 'bg-[#29e0a9]/5', header: 'text-[#29e0a9]' },
-  }
-  const s = styles[accent]
-  return (
-    <div className={`rounded-xl border ${s.border} ${s.bg} overflow-hidden`}>
-      <div className={`flex items-center gap-2 px-4 py-3 border-b ${s.border}`}>
-        {icon}
-        <span className={`text-xs font-bold ${s.header}`}>{label}</span>
-      </div>
-      <pre className="p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto whitespace-pre-wrap">
-        {code}
-      </pre>
-    </div>
-  )
-}
 
 // ─── page ─────────────────────────────────────────────────────────────────────
 

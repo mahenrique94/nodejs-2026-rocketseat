@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import {
-  CheckCircle2, XCircle, Clock, Zap, Link2, RefreshCcw, Lightbulb, Code2,
+  Zap, Link2, RefreshCcw, Lightbulb, Code2,
 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
 

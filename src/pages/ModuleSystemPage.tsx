@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
-import { Package, ArrowRight, AlertTriangle, CheckCircle2, Lightbulb, FileCode2 } from 'lucide-react'
+import { Package, ArrowRight, CheckCircle2, Lightbulb, FileCode2 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
 
 // ─── types ────────────────────────────────────────────────────────────────────
