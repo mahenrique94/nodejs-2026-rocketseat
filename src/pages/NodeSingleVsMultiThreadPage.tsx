@@ -9,6 +9,7 @@ import {
   FlaskConical, Search, Crown, Settings2, Loader2, Flame, GitBranch,
 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -19,6 +20,7 @@ type Mode = 'single' | 'multi'
 
 function BlockingDemo() {
   const [mode, setMode] = useState<Mode>('single')
+  const [started, setStarted] = useState(false)
   const [tick, setTick] = useState(0)
   const [isRunningCPU, setIsRunningCPU] = useState(false)
   const [isBlocked, setIsBlocked] = useState(false)
@@ -27,15 +29,16 @@ function BlockingDemo() {
   const [processedCount, setProcessedCount] = useState(0)
   const timersRef = useRef<ReturnType<typeof setInterval>[]>([])
 
-  // heartbeat — para quando bloqueado (single-thread)
+  // heartbeat — só após iniciar, para quando bloqueado (single-thread)
   useEffect(() => {
-    if (isBlocked) return
+    if (!started || isBlocked) return
     const t = setInterval(() => setTick((v) => v + 1), 120)
     return () => clearInterval(t)
-  }, [isBlocked])
+  }, [started, isBlocked])
 
-  // incoming requests — acumulam quando bloqueado
+  // incoming requests — só após iniciar, acumulam quando bloqueado
   useEffect(() => {
+    if (!started) return
     const t = setInterval(() => {
       if (isBlocked) {
         setPendingCount((v) => v + 1)
@@ -45,26 +48,30 @@ function BlockingDemo() {
     }, 400)
     timersRef.current.push(t)
     return () => clearInterval(t)
-  }, [isBlocked])
+  }, [started, isBlocked])
+
+  function start() {
+    setStarted(true)
+  }
 
   function runCPUTask() {
-    if (isRunningCPU) return
+    if (isRunningCPU || !started) return
     setIsRunningCPU(true)
     setCpuProgress(0)
 
     const blocked = mode === 'single'
     if (blocked) setIsBlocked(true)
 
-    const start = Date.now()
+    const startTime = Date.now()
     const t = setInterval(() => {
-      const pct = Math.min(((Date.now() - start) / 3000) * 100, 100)
+      const pct = Math.min(((Date.now() - startTime) / 3000) * 100, 100)
       setCpuProgress(pct)
       if (pct >= 100) {
         clearInterval(t)
         setIsRunningCPU(false)
         if (blocked) {
           setIsBlocked(false)
-          setPendingCount(0) // flush queue
+          setPendingCount(0)
         }
       }
     }, 50)
@@ -74,6 +81,7 @@ function BlockingDemo() {
   function reset() {
     timersRef.current.forEach(clearTimeout)
     timersRef.current = []
+    setStarted(false)
     setTick(0)
     setIsRunningCPU(false)
     setIsBlocked(false)
@@ -116,7 +124,6 @@ function BlockingDemo() {
         <div className="space-y-1.5">
           <p className="text-[10px] font-bold text-[#505059] uppercase tracking-widest">Thread Principal (Event Loop)</p>
           <div className="relative h-10 bg-[#09090a] border border-[#29292e] rounded-xl overflow-hidden">
-            {/* running indicator */}
             <motion.div
               animate={{ opacity: isBlocked ? 0.3 : 1 }}
               className="absolute inset-0 flex items-center px-4 gap-3"
@@ -127,12 +134,10 @@ function BlockingDemo() {
                 className="w-2 h-2 rounded-full bg-[#29e0a9]"
               />
               <span className="text-xs font-mono text-[#7c7c8a] flex items-center gap-2">
-                <span className={`w-2 h-2 rounded-full shrink-0 ${isBlocked ? 'bg-red-400' : 'bg-[#29e0a9]'}`} />
-                {isBlocked ? 'bloqueada — aguardando CPU...' : 'processando requisições'}
+                <span className={`w-2 h-2 rounded-full shrink-0 ${!started ? 'bg-[#323238]' : isBlocked ? 'bg-red-400' : 'bg-[#29e0a9]'}`} />
+                {!started ? 'aguardando início...' : isBlocked ? 'bloqueada — aguardando CPU...' : 'processando requisições'}
               </span>
             </motion.div>
-
-            {/* blocked overlay */}
             <AnimatePresence>
               {isBlocked && (
                 <motion.div
@@ -156,7 +161,7 @@ function BlockingDemo() {
             className="space-y-1.5"
           >
             <p className="text-[10px] font-bold text-[#505059] uppercase tracking-widest">Worker Threads</p>
-            {[1, 2, 3].map((i) => (
+            {[1, 2, 3, 4].map((i) => (
               <div key={i} className="relative h-10 bg-[#09090a] border border-[#29292e] rounded-xl overflow-hidden">
                 <div className="absolute inset-0 flex items-center px-4 gap-3">
                   <div className={`w-2 h-2 rounded-full ${i === 1 && isRunningCPU ? 'bg-amber-400 animate-pulse' : 'bg-[#29292e]'}`} />
@@ -181,20 +186,20 @@ function BlockingDemo() {
       {/* metrics row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {/* heartbeat */}
-        <div className={`rounded-xl border p-3 transition-colors duration-300 ${heartbeatBg}`}>
+        <div className={`rounded-xl border p-3 transition-colors duration-300 ${started ? heartbeatBg : 'border-[#29292e] bg-[#09090a]'}`}>
           <p className="text-[10px] text-[#505059] uppercase tracking-widest mb-1">Heartbeat</p>
           <motion.p
             key={tick}
             initial={{ scale: 1.3 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.15 }}
-            className={`text-xl font-bold font-mono origin-left ${heartbeatColor}`}
+            className={`text-xl font-bold font-mono origin-left ${started ? heartbeatColor : 'text-[#323238]'}`}
           >
             {tick}
           </motion.p>
-          <p className={`text-[10px] mt-0.5 ${heartbeatColor} flex items-center gap-1.5`}>
-            <span className={`w-2 h-2 rounded-full shrink-0 ${isBlocked ? 'bg-red-400' : 'bg-[#29e0a9]'}`} />
-            {isBlocked ? 'congelado' : 'ativo'}
+          <p className={`text-[10px] mt-0.5 ${started ? heartbeatColor : 'text-[#323238]'} flex items-center gap-1.5`}>
+            <span className={`w-2 h-2 rounded-full shrink-0 ${!started ? 'bg-[#323238]' : isBlocked ? 'bg-red-400' : 'bg-[#29e0a9]'}`} />
+            {!started ? 'parado' : isBlocked ? 'congelado' : 'ativo'}
           </p>
         </div>
 
@@ -236,25 +241,47 @@ function BlockingDemo() {
         {/* processed */}
         <div className="rounded-xl border border-[#29292e] bg-[#09090a] p-3">
           <p className="text-[10px] text-[#505059] uppercase tracking-widest mb-1">Processadas</p>
-          <p className="text-xl font-bold font-mono text-[#9956f6]">{processedCount}</p>
+          <motion.p
+            key={processedCount}
+            initial={{ scale: processedCount > 0 ? 1.2 : 1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.12 }}
+            className={`text-xl font-bold font-mono ${processedCount > 0 ? 'text-[#9956f6]' : 'text-[#323238]'}`}
+          >
+            {processedCount}
+          </motion.p>
           <p className="text-[10px] text-[#505059] mt-0.5">requisições ok</p>
         </div>
       </div>
 
       {/* actions */}
       <div className="flex items-center gap-3 flex-wrap">
-        <motion.button
-          onClick={runCPUTask}
-          disabled={isRunningCPU}
-          whileHover={!isRunningCPU ? { scale: 1.03 } : {}}
-          whileTap={!isRunningCPU ? { scale: 0.97 } : {}}
-          className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 disabled:opacity-40 disabled:cursor-not-allowed border border-amber-500 text-white text-sm font-semibold transition cursor-pointer"
-        >
-          <span className="flex items-center gap-2">
-            {isRunningCPU ? <Loader2 className="w-4 h-4 animate-spin" /> : <Flame className="w-4 h-4" />}
-            {isRunningCPU ? 'Calculando...' : 'Adicionar Tarefa CPU'}
-          </span>
-        </motion.button>
+        {!started ? (
+          <motion.button
+            onClick={start}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="px-5 py-2.5 rounded-xl bg-[#29e0a9] hover:bg-[#22c99a] border border-[#29e0a9]/50 text-[#09090a] text-sm font-semibold transition cursor-pointer"
+          >
+            <span className="flex items-center gap-2">
+              <Flame className="w-4 h-4" />
+              Iniciar Simulação
+            </span>
+          </motion.button>
+        ) : (
+          <motion.button
+            onClick={runCPUTask}
+            disabled={isRunningCPU}
+            whileHover={!isRunningCPU ? { scale: 1.03 } : {}}
+            whileTap={!isRunningCPU ? { scale: 0.97 } : {}}
+            className="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 disabled:opacity-40 disabled:cursor-not-allowed border border-amber-500 text-white text-sm font-semibold transition cursor-pointer"
+          >
+            <span className="flex items-center gap-2">
+              {isRunningCPU ? <Loader2 className="w-4 h-4 animate-spin" /> : <Flame className="w-4 h-4" />}
+              {isRunningCPU ? 'Calculando...' : 'Adicionar Tarefa CPU'}
+            </span>
+          </motion.button>
+        )}
         <motion.button
           onClick={reset}
           whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
@@ -458,7 +485,6 @@ export function NodeSingleVsMultiThreadPage() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 group">
             <RocketseatIcon className="h-6 w-auto text-[#F7F7FA] group-hover:text-white transition" />
-            <span className="text-[#505059] text-sm group-hover:text-[#7c7c8a] transition">Node.js 2026</span>
           </Link>
           <h1 className="text-base sm:text-lg font-bold text-center text-white/90 hidden sm:block">
             Single Thread vs Multi Thread
@@ -655,11 +681,9 @@ export function NodeSingleVsMultiThreadPage() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.18 }}
-                  className={`p-1 m-4 rounded-xl border ${ex.accent}`}
+                  className="p-4"
                 >
-                  <pre className="p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                    {ex.code}
-                  </pre>
+                  <CodeHighlight code={ex.code} />
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -718,9 +742,9 @@ export function NodeSingleVsMultiThreadPage() {
               <div className="border-b border-[#29292e] px-4 py-3">
                 <span className="text-xs font-semibold text-[#7c7c8a]">cluster.js</span>
               </div>
-              <pre className="p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                {CLUSTER_CODE}
-              </pre>
+              <div className="p-4">
+                <CodeHighlight code={CLUSTER_CODE} />
+              </div>
             </div>
           </div>
         </div>

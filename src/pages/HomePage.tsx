@@ -195,8 +195,6 @@ export function HomePage() {
       <div className="border-b border-[#29292e] bg-[#09090a]/95 backdrop-blur sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-6 py-4 flex items-center gap-4">
           <RocketseatWordmark className="h-[18px] w-auto text-[#F7F7FA]" />
-          <span className="text-[#323238] text-sm select-none">·</span>
-          <span className="text-[#505059] text-sm">Node.js 2026</span>
         </div>
       </div>
 
@@ -299,7 +297,6 @@ export function HomePage() {
         {/* footer */}
         <div className="border-t border-[#29292e] pt-8 flex flex-col items-center gap-2">
           <RocketseatWordmark className="h-4 w-auto text-[#323238]" />
-          <p className="text-[#323238] text-xs">Node.js 2026</p>
         </div>
       </div>
     </div>

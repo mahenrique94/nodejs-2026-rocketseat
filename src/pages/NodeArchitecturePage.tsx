@@ -7,6 +7,7 @@ import {
   Lightbulb, XCircle, CheckCircle2,
 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -154,7 +155,7 @@ const FLOW_STEPS: FlowStep[] = [
     activeLayer: 'libuv',
     title: '4. libuv recebe e decide a estratégia',
     description:
-      'libuv recebe a requisição de leitura. Para I/O de arquivo (disco), ele usa o Thread Pool — pois o sistema de arquivos não tem suporte nativo a I/O assíncrono em todos os OSes. Para rede (sockets), usaria I/O assíncrono direto do kernel.',
+      'libuv recebe a requisição de leitura. Para I/O de arquivo (disco), ele usa o Thread Pool — pois o sistema de arquivos não tem suporte nativo a I/O assíncrono em todos os OSes. Para rede (sockets), usa I/O assíncrono direto do kernel.',
     tip: 'Operações que usam Thread Pool: arquivo, DNS, crypto, zlib. Rede usa I/O assíncrono do kernel.',
   },
   {
@@ -333,7 +334,7 @@ function LayerDetail({ id }: { id: LayerId }) {
             <p className="text-[#505059] text-xs">{layer.description}</p>
           </div>
         </div>
-        <p className="text-[#a8a8b3] text-xs leading-5">{layer.detail}</p>
+        <p className="text-[#a8a8b3] text-sm leading-6">{layer.detail}</p>
       </motion.div>
     </AnimatePresence>
   )
@@ -548,7 +549,7 @@ function ConceptCards() {
         <div key={title} className={`rounded-xl border p-5 ${color}`}>
           <Icon className={`w-5 h-5 mb-3 ${ic}`} />
           <h4 className={`font-bold text-sm mb-2 ${tc}`}>{title}</h4>
-          <p className="text-[#7c7c8a] text-xs leading-5">{body}</p>
+          <p className="text-[#a8a8b3] text-sm leading-6">{body}</p>
         </div>
       ))}
     </div>
@@ -605,7 +606,6 @@ export function NodeArchitecturePage() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 group">
             <RocketseatIcon className="h-6 w-auto text-[#F7F7FA] group-hover:text-white transition" />
-            <span className="text-[#505059] text-sm group-hover:text-[#7c7c8a] transition">Node.js 2026</span>
           </Link>
           <h1 className="text-base sm:text-lg font-bold text-center text-white/90 hidden sm:block">
             Arquitetura do Node.js
@@ -713,7 +713,7 @@ export function NodeArchitecturePage() {
                   title="Reiniciar"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0f01-15.357-2m15.357 2H15" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
                 </motion.button>
                 <motion.button
@@ -780,22 +780,13 @@ export function NodeArchitecturePage() {
                   <p className="text-red-300 text-xs font-bold mb-2 flex items-center gap-1.5">
                     <XCircle className="w-3.5 h-3.5 shrink-0" /> Bloqueante (evitar)
                   </p>
-                  <pre className="text-xs font-mono text-[#7c7c8a] leading-5">{`const data = fs.readFileSync(
-  'arquivo.txt'
-)
-// ⚠️ tudo para aqui
-// até o arquivo ser lido`}</pre>
+                  <CodeHighlight code={`const data = fs.readFileSync(\n  'arquivo.txt'\n)\n// ⚠️ tudo para aqui\n// até o arquivo ser lido`} />
                 </div>
                 <div className="rounded-xl border border-[#29e0a9]/20 bg-[#29e0a9]/5 p-4">
                   <p className="text-[#29e0a9] text-xs font-bold mb-2 flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 shrink-0" /> Não-bloqueante (correto)
                   </p>
-                  <pre className="text-xs font-mono text-[#7c7c8a] leading-5">{`fs.readFile('arquivo.txt',
-  (err, data) => {
-    // executa depois ✓
-  }
-)
-// continua imediatamente`}</pre>
+                  <CodeHighlight code={`fs.readFile('arquivo.txt',\n  (err, data) => {\n    // executa depois ✓\n  }\n)\n// continua imediatamente`} />
                 </div>
               </div>
             </div>

@@ -6,6 +6,7 @@ import {
   CheckCircle2, XCircle, AlertTriangle, Handshake, Globe2,
 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -504,14 +505,6 @@ function AvailabilityBadge({ value }: { value: Availability }) {
   )
 }
 
-function CodeBlock({ code, accent }: { code: string; accent: 'browser' | 'node' }) {
-  const border = accent === 'browser' ? 'border-[#5f75f2]/20' : 'border-[#29e0a9]/20'
-  return (
-    <pre className={`bg-[#09090a] border ${border} rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.7] overflow-auto`}>
-      {code}
-    </pre>
-  )
-}
 
 function SidePanel({
   label, accent, side,
@@ -546,13 +539,13 @@ function SidePanel({
 
       <p className="text-[#a8a8b3] text-sm leading-relaxed">{side.summary}</p>
 
-      <CodeBlock code={side.code} accent={accent} />
+      <CodeHighlight code={side.code} accent={accent} />
 
       <div className={`rounded-xl border p-4 space-y-2 ${c.note}`}>
         {side.notes.map((n, i) => (
           <div key={i} className="flex items-start gap-2">
-            <span className="text-[#505059] text-xs mt-0.5 shrink-0">→</span>
-            <p className="text-[#7c7c8a] text-xs leading-relaxed">{n}</p>
+            <span className="text-[#7c7c8a] text-xs mt-0.5 shrink-0">→</span>
+            <p className="text-[#a8a8b3] text-xs leading-relaxed">{n}</p>
           </div>
         ))}
       </div>
@@ -573,7 +566,6 @@ export function NodeVsBrowserPage() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 group">
             <RocketseatIcon className="h-6 w-auto text-[#F7F7FA] group-hover:text-white transition" />
-            <span className="text-[#505059] text-sm group-hover:text-[#7c7c8a] transition">Node.js 2026</span>
           </Link>
           <h1 className="text-base sm:text-lg font-bold text-center text-white/90 hidden sm:block">
             Node.js vs Browser
@@ -728,7 +720,7 @@ export function NodeVsBrowserPage() {
                 className="rounded-xl border border-[#29292e] bg-[#09090a] p-3"
               >
                 <p className="text-white text-xs font-mono font-semibold mb-1">{api.name}</p>
-                <p className="text-[#505059] text-[10px] leading-4 mb-2">{api.desc}</p>
+                <p className="text-[#7c7c8a] text-[10px] leading-4 mb-2">{api.desc}</p>
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="inline-flex items-center gap-1 text-[10px] bg-[#5f75f2]/10 text-[#a0b0ff] px-1.5 py-0.5 rounded-full">
                     <Globe className="w-2.5 h-2.5" /> {api.browser}
@@ -756,7 +748,7 @@ export function NodeVsBrowserPage() {
             <div key={title} className={`rounded-xl border p-5 ${color}`}>
               <Icon className={`w-5 h-5 mb-3 ${ic}`} />
               <h4 className={`font-bold text-sm mb-2 ${tc}`}>{title}</h4>
-              <p className="text-[#7c7c8a] text-xs leading-5">{body}</p>
+              <p className="text-[#a8a8b3] text-xs leading-5">{body}</p>
             </div>
           ))}
         </div>

@@ -152,7 +152,6 @@ export function PromiseApiPage() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 group">
             <RocketseatIcon className="h-6 w-auto text-[#F7F7FA] group-hover:text-white transition" />
-            <span className="text-[#505059] text-sm group-hover:text-[#7c7c8a] transition">Node.js 2026</span>
           </Link>
           <h1 className="text-base sm:text-lg font-bold text-center text-white/90 hidden sm:block">
             Promise API

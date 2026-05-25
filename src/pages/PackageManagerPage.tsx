@@ -7,6 +7,7 @@ import {
   Download, Zap, Box, GitBranch, RefreshCcw, Info,
 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -81,8 +82,8 @@ node_modules/
   },
   lockfile: {
     title: 'Lockfile — Instalações Determinísticas',
-    body: 'O package-lock.json registra a versão exata de cada pacote instalado, incluindo sub-dependências. Isso garante que qualquer desenvolvedor ou CI que rodar npm ci obtenha exatamente as mesmas versões. O npm ci é mais rápido que npm install pois pula a resolução — instala diretamente do lockfile. Sempre commite o lockfile.',
-    highlight: 'Garante reprodutibilidade entre ambientes',
+    body: 'O package-lock.json é gerado automaticamente pelo npm — nunca o edite manualmente. Ele registra a versão exata de cada pacote instalado, incluindo sub-dependências, garantindo que qualquer desenvolvedor ou CI que rodar npm ci obtenha exatamente as mesmas versões. O npm ci é mais rápido que npm install pois pula a resolução — instala diretamente do lockfile. Sempre commite o lockfile no repositório.',
+    highlight: 'Gerado automaticamente — não edite manualmente',
     code: `# npm install → atualiza package-lock.json
 # npm ci → instala EXATAMENTE o lockfile (mais rápido, ideal pra CI)
 
@@ -538,7 +539,7 @@ function ToolDetail({ tool }: { tool: Tool }) {
             <div className="space-y-2">
               {tool.commands.map((cmd) => (
                 <div key={cmd.cmd} className="flex items-center gap-2">
-                  <span className="text-[#323238] text-[10px] w-24 shrink-0 leading-tight">{cmd.label}</span>
+                  <span className="text-[#505059] text-[10px] w-24 shrink-0 leading-tight">{cmd.label}</span>
                   <code className={`text-xs font-mono ${tool.color} bg-[#121214] px-2 py-0.5 rounded truncate`}>
                     {cmd.cmd}
                   </code>
@@ -569,7 +570,6 @@ export function PackageManagerPage() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3 group">
             <RocketseatIcon className="h-6 w-auto text-[#F7F7FA] group-hover:text-white transition" />
-            <span className="text-[#505059] text-sm group-hover:text-[#7c7c8a] transition">Node.js 2026</span>
           </Link>
           <h1 className="text-base sm:text-lg font-bold text-center text-white/90 hidden sm:block">
             Package Managers
@@ -643,12 +643,12 @@ export function PackageManagerPage() {
                   <span className="text-red-400 text-xs font-bold">{concept.highlight}</span>
                 </div>
                 <h3 className="text-white font-bold text-base">{concept.title}</h3>
-                <p className="text-[#7c7c8a] text-sm leading-relaxed">{concept.body}</p>
+                <p className="text-[#a8a8b3] text-sm leading-relaxed">{concept.body}</p>
               </div>
               {concept.code && (
                 <div className="lg:col-span-3 bg-[#0d0d0f] border border-[#29292e] rounded-xl p-5">
-                  <p className="text-[#323238] text-xs font-mono mb-3">exemplo</p>
-                  <pre className="text-xs font-mono text-[#7c7c8a] leading-6 overflow-x-auto whitespace-pre-wrap">{concept.code}</pre>
+                  <p className="text-[#505059] text-xs font-mono mb-3">exemplo</p>
+                  <CodeHighlight code={concept.code} />
                 </div>
               )}
             </motion.div>
@@ -834,7 +834,7 @@ export function PackageManagerPage() {
             ].map((item) => (
               <div key={item.title} className={`rounded-xl border ${item.border} ${item.bg} p-5`}>
                 <h4 className={`font-bold text-sm mb-2 ${item.color}`}>{item.title}</h4>
-                <p className="text-[#7c7c8a] text-xs leading-5">{item.when}</p>
+                <p className="text-[#a8a8b3] text-xs leading-5">{item.when}</p>
               </div>
             ))}
           </div>
