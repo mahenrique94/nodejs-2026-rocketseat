@@ -6,6 +6,7 @@ import {
   BookOpen, Play, Pause, RotateCcw, CheckCircle2,
 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -389,9 +390,7 @@ function CodePane({ code }: { code: string }) {
         <FileCode2 className="w-4 h-4 text-white/50" />
         <h3 className="text-xs font-bold text-white uppercase tracking-widest">Código-Fonte</h3>
       </div>
-      <pre className="flex-1 border border-[#29292e] rounded-xl bg-[#09090a] p-4 text-xs font-mono text-[#a8a8b3] overflow-auto leading-6 h-[260px] whitespace-pre-wrap">
-        {code}
-      </pre>
+      <CodeHighlight code={code} className="flex-1 h-[260px] whitespace-pre-wrap" />
     </div>
   )
 }
