@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { Lightbulb, CheckCircle2, XCircle, Code2, Zap, RefreshCcw } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── data ─────────────────────────────────────────────────────────────────────
 
@@ -255,9 +256,7 @@ export function AsyncAwaitPage() {
                         Você precisa criar variáveis externas ou reformular a lógica.
                       </p>
                     </div>
-                    <pre className="bg-[#09090a] border border-[#5f75f2]/20 rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                      {COMPARISON_PROMISE}
-                    </pre>
+                    <CodeHighlight code={COMPARISON_PROMISE} border="border-[#5f75f2]/20" />
                   </>
                 ) : (
                   <>
@@ -269,9 +268,7 @@ export function AsyncAwaitPage() {
                         em todo o escopo da função — código linear e legível.
                       </p>
                     </div>
-                    <pre className="bg-[#09090a] border border-[#29e0a9]/20 rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                      {COMPARISON_ASYNC}
-                    </pre>
+                    <CodeHighlight code={COMPARISON_ASYNC} accent="node" />
                   </>
                 )}
               </motion.div>
@@ -310,9 +307,7 @@ export function AsyncAwaitPage() {
                 className="p-5 space-y-4"
               >
                 <p className="text-[#a8a8b3] text-sm leading-relaxed">{error.desc}</p>
-                <pre className="bg-[#09090a] border border-[#29292e] rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                  {error.code}
-                </pre>
+                <CodeHighlight code={error.code} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -336,9 +331,7 @@ export function AsyncAwaitPage() {
               >
                 <h4 className={`font-bold text-sm ${p.tc}`}>{p.title}</h4>
                 <p className="text-[#7c7c8a] text-xs leading-relaxed">{p.desc}</p>
-                <pre className="bg-[#09090a] border border-[#29292e] rounded-xl p-3 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                  {p.code}
-                </pre>
+                <CodeHighlight code={p.code} />
               </motion.div>
             ))}
           </div>
@@ -353,24 +346,18 @@ export function AsyncAwaitPage() {
 
           <div className="bg-[#121214] border border-[#29292e] rounded-xl p-6">
             <p className="text-[#505059] text-xs mb-4 text-center">Async/await é transformado em Promises pelo motor JavaScript</p>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-4 items-center">
               <div className="space-y-2">
                 <p className="text-[#505059] text-[10px] uppercase tracking-widest">O que você escreve</p>
-                <pre className="bg-[#09090a] border border-[#9956f6]/20 rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75]">
-                  {UNDER_HOOD_LEFT}
-                </pre>
+                <CodeHighlight code={UNDER_HOOD_LEFT} border="border-[#9956f6]/20" />
               </div>
-              <div className="flex flex-col gap-3">
-                <div className="hidden lg:flex justify-center">
-                  <span className="text-[#323238] text-2xl">⟺</span>
-                </div>
-                <div className="lg:hidden text-center text-[#323238] text-xs uppercase tracking-widest">equivalente</div>
-                <div className="space-y-2">
-                  <p className="text-[#505059] text-[10px] uppercase tracking-widest">O que o motor executa</p>
-                  <pre className="bg-[#09090a] border border-[#29e0a9]/20 rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75]">
-                    {UNDER_HOOD_RIGHT}
-                  </pre>
-                </div>
+              <div className="hidden lg:flex items-center justify-center px-2">
+                <span className="text-[#323238] text-2xl">⟺</span>
+              </div>
+              <div className="space-y-2">
+                <div className="lg:hidden text-center text-[#323238] text-xs uppercase tracking-widest mb-2">equivalente</div>
+                <p className="text-[#505059] text-[10px] uppercase tracking-widest">O que o motor executa</p>
+                <CodeHighlight code={UNDER_HOOD_RIGHT} accent="node" />
               </div>
             </div>
             <div className="flex items-start gap-3 mt-4 bg-[#202024] rounded-xl px-4 py-3">

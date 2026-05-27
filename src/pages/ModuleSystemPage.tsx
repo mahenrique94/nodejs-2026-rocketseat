@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { Package, ArrowRight, CheckCircle2, Lightbulb, FileCode2 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -280,18 +281,14 @@ export function ModuleSystemPage() {
                       <FileCode2 className="w-3.5 h-3.5 text-[#505059]" />
                       <span className="text-[#505059] text-xs font-mono">exportação</span>
                     </div>
-                    <pre className="bg-[#09090a] border border-[#29292e] rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                      {content.exportCode}
-                    </pre>
+                    <CodeHighlight code={content.exportCode} />
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
                       <FileCode2 className="w-3.5 h-3.5 text-[#505059]" />
                       <span className="text-[#505059] text-xs font-mono">importação</span>
                     </div>
-                    <pre className="bg-[#09090a] border border-[#29292e] rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                      {content.importCode}
-                    </pre>
+                    <CodeHighlight code={content.importCode} />
                   </div>
                 </div>
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { Box, ChevronRight, HardDrive, Globe, Monitor, Database, FolderOpen } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 const MODULES = [
   {
@@ -287,9 +288,7 @@ export function NativeModulesPage() {
                 <active.icon className={`w-4 h-4 ${active.color}`} />
                 <p className="text-[#a8a8b3] text-sm leading-relaxed">{active.description}</p>
               </div>
-              <pre className="p-5 text-sm text-[#a8a8b3] overflow-x-auto leading-relaxed font-mono">
-                <code>{active.code}</code>
-              </pre>
+              <CodeHighlight code={active.code} />
             </motion.div>
           </AnimatePresence>
         </motion.section>

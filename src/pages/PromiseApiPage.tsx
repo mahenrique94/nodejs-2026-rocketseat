@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { CheckCircle2, Zap, List, Target, AlertTriangle, XCircle } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -242,9 +243,7 @@ export function PromiseApiPage() {
                 <p className="text-[#a8a8b3] text-sm leading-relaxed">{method.useCase}</p>
               </div>
 
-              <pre className={`bg-[#09090a] border ${method.border} rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto`}>
-                {method.code}
-              </pre>
+              <CodeHighlight code={method.code} border={method.border} />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="flex items-start gap-2 bg-[#29e0a9]/5 border border-[#29e0a9]/20 rounded-xl px-3 py-2.5">
@@ -319,9 +318,7 @@ export function PromiseApiPage() {
                 <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
                 <span className="text-red-400 text-xs font-bold">Sequencial — lento (~3s)</span>
               </div>
-              <pre className="bg-[#09090a] border border-red-500/20 rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75]">
-                {SEQUENTIAL_CODE}
-              </pre>
+              <CodeHighlight code={SEQUENTIAL_CODE} border="border-red-500/20" />
               <TimingBar label="Tempo total: ~3 segundos" segments={3} color="bg-red-500/60" />
             </div>
             <div className="space-y-3">
@@ -329,9 +326,7 @@ export function PromiseApiPage() {
                 <CheckCircle2 className="w-4 h-4 text-[#29e0a9] shrink-0" />
                 <span className="text-[#29e0a9] text-xs font-bold">Paralelo — rápido (~1s)</span>
               </div>
-              <pre className="bg-[#09090a] border border-[#29e0a9]/20 rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75]">
-                {PARALLEL_CODE}
-              </pre>
+              <CodeHighlight code={PARALLEL_CODE} accent="node" />
               <TimingBar label="Tempo total: ~1 segundo" segments={1} color="bg-[#29e0a9]/60" />
             </div>
           </div>

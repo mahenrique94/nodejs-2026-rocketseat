@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { HardDrive, ChevronRight, Hash, Binary, Layers, AlertTriangle } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 const CREATION_TABS = ['Buffer.from()', 'Buffer.alloc()', 'Buffer.concat()'] as const
 type CreationTab = (typeof CREATION_TABS)[number]
@@ -207,13 +208,11 @@ export function BuffersPage() {
               </div>
             </div>
 
-            <div className="bg-[#09090a] border border-[#29292e] rounded-xl p-4">
-              <pre className="text-sm text-[#a8a8b3] font-mono leading-relaxed">{`const buf = Buffer.from('Hello')
+            <CodeHighlight code={`const buf = Buffer.from('Hello')
 console.log(buf)        // <Buffer 48 65 6c 6c 6f>
 console.log(buf.length) // 5
 console.log(buf[0])     // 72 (código ASCII de 'H')
-console.log(buf.toString()) // 'Hello'`}</pre>
-            </div>
+console.log(buf.toString()) // 'Hello'`} />
           </div>
         </motion.section>
 
@@ -252,9 +251,7 @@ console.log(buf.toString()) // 'Hello'`}</pre>
               <div className="px-5 py-4 border-b border-[#29292e]">
                 <p className="text-[#a8a8b3] text-sm leading-relaxed">{CREATION_CODE[activeTab].description}</p>
               </div>
-              <pre className="p-5 text-sm text-[#a8a8b3] overflow-x-auto leading-relaxed font-mono">
-                <code>{CREATION_CODE[activeTab].code}</code>
-              </pre>
+              <CodeHighlight code={CREATION_CODE[activeTab].code} />
             </motion.div>
           </AnimatePresence>
         </motion.section>

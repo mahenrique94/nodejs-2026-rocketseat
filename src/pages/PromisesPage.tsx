@@ -5,6 +5,7 @@ import {
   Zap, Link2, RefreshCcw, Lightbulb, Code2,
 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── types ────────────────────────────────────────────────────────────────────
 
@@ -221,9 +222,7 @@ function StateMachine({
             <span className={`text-xs font-bold ${s.color}`}>{s.label}</span>
           </div>
           <p className="text-[#a8a8b3] text-sm leading-relaxed">{s.desc}</p>
-          <pre className={`bg-[#09090a] border ${s.border} rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto`}>
-            {s.code}
-          </pre>
+          <CodeHighlight code={s.code} border={s.border} />
         </motion.div>
       </AnimatePresence>
 
@@ -361,9 +360,7 @@ export function PromisesPage() {
                 className="p-5 space-y-4"
               >
                 <p className="text-[#a8a8b3] text-sm leading-relaxed">{method.desc}</p>
-                <pre className="bg-[#09090a] border border-[#29292e] rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                  {method.code}
-                </pre>
+                <CodeHighlight code={method.code} />
                 <div className="flex items-start gap-3 bg-[#202024] rounded-xl px-4 py-3">
                   <Lightbulb className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                   <p className="text-[#7c7c8a] text-xs leading-relaxed">{method.tip}</p>
@@ -421,9 +418,7 @@ export function PromisesPage() {
               <Code2 className="w-4 h-4 text-[#505059]" />
               <span className="text-[#505059] text-xs font-mono">promisify.js</span>
             </div>
-            <pre className="p-5 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-              {CREATE_CODE}
-            </pre>
+            <CodeHighlight code={CREATE_CODE} />
           </div>
         </section>
 

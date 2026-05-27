@@ -6,6 +6,7 @@ import {
   Clock, ArrowRight, Lightbulb,
 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 // ─── data ─────────────────────────────────────────────────────────────────────
 
@@ -226,9 +227,7 @@ export function CallbackHellPage() {
                         4 níveis para a direita — a <strong className="text-red-400">Pyramid of Doom</strong>.
                       </p>
                     </div>
-                    <pre className="bg-[#09090a] border border-red-500/20 rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                      {CALLBACK_HELL_CODE}
-                    </pre>
+                    <CodeHighlight code={CALLBACK_HELL_CODE} border="border-red-500/20" />
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -239,9 +238,7 @@ export function CallbackHellPage() {
                         com um único <code className="text-[#29e0a9] font-mono">.catch()</code> cobrindo todos os erros.
                       </p>
                     </div>
-                    <pre className="bg-[#09090a] border border-[#29e0a9]/20 rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto">
-                      {PROMISES_CODE}
-                    </pre>
+                    <CodeHighlight code={PROMISES_CODE} accent="node" />
                   </div>
                 )}
               </motion.div>
@@ -322,9 +319,7 @@ export function CallbackHellPage() {
                         >
                           <div className="px-5 pb-5 space-y-3">
                             <p className="text-[#a8a8b3] text-sm leading-relaxed">{step.description}</p>
-                            <pre className={`bg-[#09090a] border ${step.border} rounded-xl p-4 text-xs font-mono text-[#a8a8b3] leading-[1.75] overflow-auto`}>
-                              {step.code}
-                            </pre>
+                            <CodeHighlight code={step.code} border={step.border} />
                           </div>
                         </motion.div>
                       )}

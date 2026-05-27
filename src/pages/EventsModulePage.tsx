@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { Radio, Zap, ChevronRight, AlertTriangle, Eye, Layers } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 const TABS = ['Básico', 'Herança', 'Padrão Observer'] as const
 type Tab = (typeof TABS)[number]
@@ -267,9 +268,7 @@ export function EventsModulePage() {
               <div className="px-5 py-4 border-b border-[#29292e]">
                 <p className="text-[#a8a8b3] text-sm leading-relaxed">{TAB_CONTENT[activeTab].description}</p>
               </div>
-              <pre className="p-5 text-sm text-[#a8a8b3] overflow-x-auto leading-relaxed font-mono">
-                <code>{TAB_CONTENT[activeTab].code}</code>
-              </pre>
+              <CodeHighlight code={TAB_CONTENT[activeTab].code} />
             </motion.div>
           </AnimatePresence>
         </motion.section>

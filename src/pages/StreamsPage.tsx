@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { Waves, ArrowRight, Filter, Zap, ChevronRight, AlertTriangle, CheckCircle2 } from 'lucide-react'
 import { RocketseatIcon } from '../components/RocketseatLogo'
+import { CodeHighlight } from '../components/CodeHighlight'
 
 const STREAM_TYPES = [
   {
@@ -141,6 +142,38 @@ await pipelineAsync(
 
 type StreamTypeId = (typeof STREAM_TYPES)[number]['id']
 
+const READ_FILE_CODE = `// arquivo de 2 GB → 2 GB na RAM
+const data = await readFile('./huge.csv')
+const text = data.toString()
+processAll(text)
+
+// problema: pode explodir a memória
+// e travar o Event Loop por segundos`
+
+const STREAM_READ_CODE = `// arquivo de 2 GB → ~64 KB de uso de RAM
+const stream = createReadStream('./huge.csv')
+
+for await (const chunk of stream) {
+  processChunk(chunk)
+}
+
+// Event Loop nunca fica bloqueado
+// memória constante independente do tamanho`
+
+const PIPELINE_CODE = `import { pipeline } from 'node:stream/promises'
+import { createReadStream, createWriteStream } from 'node:fs'
+import { createGzip } from 'node:zlib'
+
+// pipeline propaga erros e faz cleanup automaticamente
+await pipeline(
+  createReadStream('./video.mp4'),
+  createGzip(),
+  createWriteStream('./video.mp4.gz'),
+)
+
+// equivalente com .pipe() — EVITE (erros não propagam)
+readStream.pipe(gzip).pipe(writeStream) // ❌`
+
 const CONCEPTS = [
   {
     icon: Waves,
@@ -232,13 +265,7 @@ export function StreamsPage() {
                 <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
                 <span className="text-red-400 text-xs font-semibold">readFile — carrega tudo na memória</span>
               </div>
-              <pre className="p-5 text-xs text-[#a8a8b3] font-mono leading-relaxed">{`// arquivo de 2 GB → 2 GB na RAM
-const data = await readFile('./huge.csv')
-const text = data.toString()
-processAll(text)
-
-// problema: pode explodir a memória
-// e travar o Event Loop por segundos`}</pre>
+              <CodeHighlight code={READ_FILE_CODE} border="border-red-500/10" />
             </div>
             {/* stream */}
             <div className="bg-[#29e0a9]/5 border border-[#29e0a9]/20 rounded-2xl overflow-hidden">
@@ -246,15 +273,7 @@ processAll(text)
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#29e0a9]" />
                 <span className="text-[#29e0a9] text-xs font-semibold">Stream — chunks de 64 KB na memória</span>
               </div>
-              <pre className="p-5 text-xs text-[#a8a8b3] font-mono leading-relaxed">{`// arquivo de 2 GB → ~64 KB de uso de RAM
-const stream = createReadStream('./huge.csv')
-
-for await (const chunk of stream) {
-  processChunk(chunk)
-}
-
-// Event Loop nunca fica bloqueado
-// memória constante independente do tamanho`}</pre>
+              <CodeHighlight code={STREAM_READ_CODE} border="border-[#29e0a9]/10" />
             </div>
           </div>
         </motion.section>
@@ -296,9 +315,7 @@ for await (const chunk of stream) {
               <div className="px-5 py-4 border-b border-[#29292e]">
                 <p className="text-[#a8a8b3] text-sm leading-relaxed">{active.description}</p>
               </div>
-              <pre className="p-5 text-sm text-[#a8a8b3] overflow-x-auto leading-relaxed font-mono">
-                <code>{active.code}</code>
-              </pre>
+              <CodeHighlight code={active.code} />
             </motion.div>
           </AnimatePresence>
         </motion.section>
@@ -332,21 +349,7 @@ for await (const chunk of stream) {
               )}
             </div>
 
-            <div className="bg-[#09090a] border border-[#29292e] rounded-xl p-4">
-              <pre className="text-sm text-[#a8a8b3] font-mono leading-relaxed overflow-x-auto">{`import { pipeline } from 'node:stream/promises'
-import { createReadStream, createWriteStream } from 'node:fs'
-import { createGzip } from 'node:zlib'
-
-// pipeline propaga erros e faz cleanup automaticamente
-await pipeline(
-  createReadStream('./video.mp4'),
-  createGzip(),
-  createWriteStream('./video.mp4.gz'),
-)
-
-// equivalente com .pipe() — EVITE (erros não propagam)
-readStream.pipe(gzip).pipe(writeStream) // ❌`}</pre>
-            </div>
+            <CodeHighlight code={PIPELINE_CODE} />
           </div>
         </motion.section>
 

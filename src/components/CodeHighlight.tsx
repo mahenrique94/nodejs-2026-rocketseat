@@ -137,11 +137,12 @@ const COLORS: Record<TType, string> = {
 interface Props {
   code: string
   accent?: 'browser' | 'node'
+  border?: string
   className?: string
 }
 
-export function CodeHighlight({ code, accent, className }: Props) {
-  const border = accent === 'browser' ? 'border-[#5f75f2]/20' : accent === 'node' ? 'border-[#29e0a9]/20' : 'border-[#29292e]'
+export function CodeHighlight({ code, accent, border: borderProp, className }: Props) {
+  const border = borderProp ?? (accent === 'browser' ? 'border-[#5f75f2]/20' : accent === 'node' ? 'border-[#29e0a9]/20' : 'border-[#29292e]')
   const tokens = tokenize(code)
 
   return (
